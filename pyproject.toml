@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "precice-performance-study-helpers"
+version = "0.1"
+dependencies = []
+requires-python = ">= 3"
+authors = [
+  {name = "Benjamin Rodenberg", email = "benjamin.rodenberg@cit.tum.de"},
+]
+description = "A project containing helpers to perform performance studies with preCICE tutorial cases"
+readme = "README.md"
+license = {file = "LICENSE"}
