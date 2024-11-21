@@ -1,15 +1,33 @@
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "precice-performance-study-helpers"
-version = "0.1"
-dependencies = []
-requires-python = ">= 3"
+version = "0.1.0"
+description = "Python tools for conducting parameter studies and automating workflows in preCICE tutorial cases."
+readme = "README.md"
+readme-content-type = "text/markdown"
 authors = [
   {name = "Benjamin Rodenberg", email = "benjamin.rodenberg@cit.tum.de"},
 ]
-description = "A project containing helpers to perform performance studies with preCICE tutorial cases"
-readme = "README.md"
 license = {file = "LICENSE"}
+keywords = ["preCICE", "parameter studies", "convergence", "automation", "Python"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "precice",
+    "numpy",
+    "matplotlib"
+]
+
+[project.urls]
+Homepage = "https://github.com/BenjaminRodenberg/doConvergenceStudy"
+Source = "https://github.com/BenjaminRodenberg/doConvergenceStudy"
+Tracker = "https://github.com/BenjaminRodenberg/doConvergenceStudy/issues"
