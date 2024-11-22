@@ -3,11 +3,10 @@ requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "precice-performance-study-helpers"
+name = "prepesthel"
 version = "0.1.0"
-description = "Python tools for conducting parameter studies and automating workflows in preCICE tutorial cases."
+description = "PREcice-PErformance-STudy-HELpers: Python tools for conducting parameter studies and automating workflows in preCICE tutorial cases."
 readme = "README.md"
-readme-content-type = "text/markdown"
 authors = [
   {name = "Benjamin Rodenberg", email = "benjamin.rodenberg@cit.tum.de"},
 ]
@@ -22,7 +21,6 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 dependencies = [
-    "precice",
     "numpy",
     "matplotlib"
 ]

@@ -5,7 +5,6 @@ from pandas import DataFrame
 from pathlib import Path
 from .participant import Participants
 import git
-# import precice
 
 
 class Results:
@@ -30,8 +29,14 @@ class Results:
         print(self.dataFrame)
         print('-' * os.get_terminal_size().columns)
         
-    def output_final(self, participants: Participants, args):
-        self.dataFrame = self.dataFrame.set_index([f"time step size {p.name}" for p in participants.values()])
+    def output_final(self, participants: Participants, args, precice_config_params=None):
+        is_monolithic = len(participants) == 1
+
+        if is_monolithic:  # only a single time step size
+            self.dataFrame = self.dataFrame.set_index([f"time step size {p.name}" for p in participants.values()])
+        else:  # time window size + len(participants) individual time step sizes
+            self.dataFrame = self.dataFrame.set_index(["time window size"] + [f"time step size {p.name}" for p in participants.values()])
+
         print(f"Write final output to {self.path}")
 
         git_info = {}
@@ -50,12 +55,20 @@ class Results:
         metadata = {
             "participants version": git_info,
             "participants": participants,
-            # "precice.get_version_information()": precice.get_version_information(),
-            # "precice.__version__": precice.__version__,
             "run cmd": "python3 " + " ".join(sys.argv),
             "args": args,
-            # "precice_config_params": precice_config_params,
         }
+
+        if not is_monolithic:  # coupled simulation
+            try:
+                import precice
+                metadata["precice.get_version_information()"] = precice.get_version_information()
+                metadata["precice.__version__"] = precice.__version__
+            except ModuleNotFoundError as e:
+                import warnings
+                warnings.warn(f"Could not import precice. Skipping information in metadata that requires precice. \nModuleNotFoundError: {e}")
+
+            metadata["precice_config_params"] = precice_config_params
 
         self.path.unlink()
 
