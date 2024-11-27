@@ -12,7 +12,7 @@ parentdir_prefix = "prepesthel-"
 
 [project]
 name = "prepesthel"
-version = "0.1.0"
+dynamic = ["version"]
 description = "PREcice-PErformance-STudy-HELpers: Python tools for conducting parameter studies and automating workflows in preCICE tutorial cases."
 readme = "README.md"
 authors = [
