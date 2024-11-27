@@ -1,11 +1,16 @@
-# doConvergenceStudy
+# preCICE performance study helpers
 A python-based workflow for parameter studies of preCICE tutorial cases
 
-## How to use:
+The package `prepesthel` provides utilities for parameter studies of coupled simulations using multiple executables. This includes
 
-* Script automatically generates a `precice-config.xml` from a `precice-config-template.xml` (see `examples`).
-* Copy `src/doConvergenceStudy.py` and `examples/precice-config-template.xml` to the tutorial case (currently only supports `tutorials/prependicular-flap`)
-* Run `python3 ./doConvergenceStudy.py precice-config-template.xml`. Use `python3 ./doConvergenceStudy.py --help` to learn about additional parameters.
-* The script `doConvergenceStudy.py` defines how the error is measured. Make sure to provide a file that is named `watchpoint_{participant['case']}_ref`, if you want to get an error estimate.
+* `prepesthel.participants` for definition one or multiple `Participant`s that contribute to a coupled simulation. This includes parameters needed for the individual runs etc.
+* `prepesthel.runner` for orchestration of the participants according to their definition and postprocessing of the results. The `prepesthel.runner` also provides functionality to automatically creates a `precice-config.xml` from a given template. Refer to `examples/precice-config-template.xml`
+* `prepesthel.io` for outputting reports of multiple runs including metadata about the runs.
 
-**Important:** The interface is currently experimental and work-in-progress.
+## Installation
+
+Run `pip3 install .` in this folder. Or install the latest release from PyPI via `pip3 install prepesthel`.
+
+## How to use
+
+`examples/doConvergenceStudy.py` shows an example script using `prepesthel` for a convergence study of a coupled simulation.
