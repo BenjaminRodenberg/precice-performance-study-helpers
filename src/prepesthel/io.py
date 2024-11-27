@@ -14,7 +14,7 @@ class Results:
     def __init__(self, path: Path):
         if path.is_file():
             raise IOError(f"File {path} already exists. Aborting.")
-        
+
         self.path = path
         self.dataFrame = DataFrame()
 
@@ -28,14 +28,15 @@ class Results:
         print('-' * os.get_terminal_size().columns)
         print(self.dataFrame)
         print('-' * os.get_terminal_size().columns)
-        
+
     def output_final(self, participants: Participants, args, precice_config_params=None):
         is_monolithic = len(participants) == 1
 
         if is_monolithic:  # only a single time step size
             self.dataFrame = self.dataFrame.set_index([f"time step size {p.name}" for p in participants.values()])
         else:  # time window size + len(participants) individual time step sizes
-            self.dataFrame = self.dataFrame.set_index(["time window size"] + [f"time step size {p.name}" for p in participants.values()])
+            self.dataFrame = self.dataFrame.set_index(["time window size"] +
+                                                      [f"time step size {p.name}" for p in participants.values()])
 
         print(f"Write final output to {self.path}")
 
@@ -66,7 +67,8 @@ class Results:
                 metadata["precice.__version__"] = precice.__version__
             except ModuleNotFoundError as e:
                 import warnings
-                warnings.warn(f"Could not import precice. Skipping information in metadata that requires precice. \nModuleNotFoundError: {e}")
+                warnings.warn(
+                    f"Could not import precice. Skipping information in metadata that requires precice. \nModuleNotFoundError: {e}")
 
             metadata["precice_config_params"] = precice_config_params
 

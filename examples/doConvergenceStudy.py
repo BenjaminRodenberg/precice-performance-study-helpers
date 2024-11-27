@@ -10,6 +10,7 @@ import sys
 from pycice_study_tools.participant import Participants, Participant, run
 from pycice_study_tools.io import output_preliminary_results, output_final_results
 
+
 def render(template_path, precice_config_params):
     base_path = Path(__file__).parent.absolute()
 
@@ -26,16 +27,12 @@ def render(template_path, precice_config_params):
         file.write(precice_config_template.render(precice_config_params))
 
 
-
-
-
 def do_experiment(template_path, precice_config_params, participants: Participants):
     if args.template_path:
         render(template_path, precice_config_params)
         print(f"{datetime.datetime.now()}: Start run with parameters {precice_config_params}")
     else:
         print(f"{datetime.datetime.now()}: Start run")
-
 
     run(participants)
 
@@ -59,7 +56,11 @@ def do_experiment(template_path, precice_config_params, participants: Participan
             except IndexError:
                 qoi_ref_at_end = -1
 
-            df = pd.read_csv(participant.root / f"precice-{pname}-watchpoint-Flap-Tip.log", comment="#", delim_whitespace=True)
+            df = pd.read_csv(
+                participant.root /
+                f"precice-{pname}-watchpoint-Flap-Tip.log",
+                comment="#",
+                delim_whitespace=True)
             qoi_at_end = df[df["Time"] == t_end][qoi].to_list()[-1]
             summary[f"{qoi} {pname}"] = qoi_at_end
             summary[f"error {pname}"] = abs(qoi_at_end - qoi_ref_at_end)
@@ -125,7 +126,7 @@ if __name__ == "__main__":
         }
 
     root_folder = Path()
-    
+
     results_file: Path
     if args.out_filename:  # use file name given by user
         results_file = root_folder / results_file / args.out_filename
@@ -138,9 +139,8 @@ if __name__ == "__main__":
     watchpoint_folder = results_file.with_suffix('')
     watchpoint_folder.mkdir(parents=False, exist_ok=False)
 
-
     participants: Participants = {
-        "Fluid": Participant("Fluid", "fluid-fake", ["./run.sh"], [],  {}),
+        "Fluid": Participant("Fluid", "fluid-fake", ["./run.sh"], [], {}),
         "Solid": Participant("Solid", "solid-fenics", ["./run.sh"], [], {})
     }
 
@@ -152,12 +152,13 @@ if __name__ == "__main__":
         df = pd.concat([df, pd.DataFrame(summary, index=[0])], ignore_index=True)
 
         # store the watchpoint file
-        (participants["Solid"]["root"] / "precice-Solid-watchpoint-Flap-Tip.log").rename(watchpoint_folder / f"watchpoint_{dt}")
+        (participants["Solid"]["root"] /
+         "precice-Solid-watchpoint-Flap-Tip.log").rename(watchpoint_folder /
+                                                         f"watchpoint_{dt}")
 
         output_preliminary_results(df, results_file)
 
-
-    ## TODO: Try to use prepesthel.io.output_final_results(df, results_file, participants, args)    
+    # TODO: Try to use prepesthel.io.output_final_results(df, results_file, participants, args)
 
     df = df.set_index(['time window size'] + [f'time step size {p.name}' for p in participants.values()])
     print(f"Write final output to {results_file}")

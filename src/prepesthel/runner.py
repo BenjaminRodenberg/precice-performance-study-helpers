@@ -32,14 +32,14 @@ def run(participants: Participants, template_path=None, precice_config_params=No
     # wait until all participants are done
     for participant in participants.values():
         participant.wait()
-        
+
     print(f"{datetime.datetime.now()}: Done.")
 
 
 def postproc(participants: Participants, precice_config_params=None):
     print(f"{datetime.datetime.now()}: Postprocessing...")
     summary = {}
-    
+
     is_monolithic = len(participants) == 1
 
     if (not is_monolithic) and precice_config_params:
