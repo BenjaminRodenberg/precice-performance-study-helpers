@@ -2,17 +2,8 @@
 requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.versioneer]
-VCS = "git"
-style = "pep440"
-versionfile_source = "src/prepesthel/_version.py"
-versionfile_build = "prepesthel/_version.py"
-tag_prefix = "v"
-parentdir_prefix = "prepesthel-"
-
 [project]
 name = "prepesthel"
-dynamic = ["version"]
 description = "PREcice-PErformance-STudy-HELpers: Python tools for conducting parameter studies and automating workflows in preCICE tutorial cases."
 readme = "README.md"
 authors = [
@@ -31,8 +22,17 @@ classifiers = [
 dependencies = [
     "numpy"
 ]
+dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/BenjaminRodenberg/doConvergenceStudy"
 Source = "https://github.com/BenjaminRodenberg/doConvergenceStudy"
 Tracker = "https://github.com/BenjaminRodenberg/doConvergenceStudy/issues"
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "src/prepesthel/_version.py"
+versionfile_build = "prepesthel/_version.py"
+tag_prefix = "v"
+parentdir_prefix = "prepesthel-"
