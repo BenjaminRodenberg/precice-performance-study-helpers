@@ -20,7 +20,8 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 dependencies = [
-    "numpy"
+    "numpy",
+    "GitPython"
 ]
 dynamic = ["version"]
 
