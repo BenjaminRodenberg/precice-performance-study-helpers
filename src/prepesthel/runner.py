@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 from pathlib import Path
+import os
 
 
 def render(template_path, precice_config_params):
