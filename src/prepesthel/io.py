@@ -56,8 +56,8 @@ class Results:
         if not silent:
             print(f"Write final output to {self.path}")
 
+        git_info = {}
         for participant in participants.values():
-            git_info = {}
             if executor is Executors.LOCAL.value:
                 repo = git.Repo(participant.root, search_parent_directories=True)
                 chash = str(repo.head.commit)[:7]
@@ -75,7 +75,7 @@ class Results:
                     "chash": os.environ['GITHUB_SHA']
                 }
             else:
-                pass  # unknown executor, dropping git info
+                raise Exception(f'unknown executor {executor}')
 
         metadata = {
             "participants version": git_info,
