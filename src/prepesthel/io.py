@@ -58,7 +58,7 @@ class Results:
 
         git_info = {}
         for participant in participants.values():
-            if executor is Executors.LOCAL.value:
+            if executor == Executors.LOCAL.value:
                 repo = git.Repo(participant.root, search_parent_directories=True)
                 chash = str(repo.head.commit)[:7]
                 if repo.is_dirty():
@@ -68,7 +68,7 @@ class Results:
                     "repo": repo.remotes.origin.url,
                     "chash": chash
                 }
-            elif executor is Executors.GITHUB.value:
+            elif executor == Executors.GITHUB.value:
                 git_info[participant.name] = {
                     "url": os.environ['GITHUB_REPOSITORY'],
                     "repo": os.environ['GITHUB_REF'],
