@@ -5,6 +5,12 @@ from pandas import DataFrame
 from pathlib import Path
 from .participant import Participants
 import git
+from enum import Enum
+
+
+class Executors(Enum):
+    LOCAL = "Local"
+    GITHUB = "Github"
 
 
 class Results:
@@ -32,7 +38,7 @@ class Results:
             print(self.dataFrame)
             print('-' * os.get_terminal_size().columns)
 
-    def output_final(self, participants: Participants, args, precice_config_params=None, silent=False):
+    def output_final(self, participants: Participants, args, precice_config_params=None, silent=False, executor=Executors.LOCAL.value):
         is_monolithic = len(participants) == 1
 
         if is_monolithic:  # only a single time step size
@@ -44,18 +50,26 @@ class Results:
         if not silent:
             print(f"Write final output to {self.path}")
 
-        git_info = {}
-
         for participant in participants.values():
-            repo = git.Repo(participant.root, search_parent_directories=True)
-            chash = str(repo.head.commit)[:7]
-            if repo.is_dirty():
-                chash += "-dirty"
+            git_info = {}
+            if executor is Executors.LOCAL.value:
+                repo = git.Repo(participant.root, search_parent_directories=True)
+                chash = str(repo.head.commit)[:7]
+                if repo.is_dirty():
+                    chash += "-dirty"
 
-            git_info[participant.name] = {
-                "repo": repo.remotes.origin.url,
-                "chash": chash
-            }
+                git_info[participant.name] = {
+                    "repo": repo.remotes.origin.url,
+                    "chash": chash
+                }
+            elif executor is Executors.GITHUB.value:
+                git_info[participant.name] = {
+                    "url": os.environ['GITHUB_REPOSITORY'],
+                    "repo": os.environ['GITHUB_REF'],
+                    "chash": os.environ['GITHUB_SHA']
+                }
+            else:
+                pass  # unknown executor, dropping git info 
 
         metadata = {
             "participants version": git_info,
