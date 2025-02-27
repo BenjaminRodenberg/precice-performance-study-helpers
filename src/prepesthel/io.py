@@ -38,7 +38,13 @@ class Results:
             print(self.dataFrame)
             print('-' * os.get_terminal_size().columns)
 
-    def output_final(self, participants: Participants, args, precice_config_params=None, silent=False, executor=Executors.LOCAL.value):
+    def output_final(
+            self,
+            participants: Participants,
+            args,
+            precice_config_params=None,
+            silent=False,
+            executor=Executors.LOCAL.value):
         is_monolithic = len(participants) == 1
 
         if is_monolithic:  # only a single time step size
@@ -69,7 +75,7 @@ class Results:
                     "chash": os.environ['GITHUB_SHA']
                 }
             else:
-                pass  # unknown executor, dropping git info 
+                pass  # unknown executor, dropping git info
 
         metadata = {
             "participants version": git_info,
