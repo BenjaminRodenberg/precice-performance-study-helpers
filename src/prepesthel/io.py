@@ -42,9 +42,9 @@ class Results:
             self,
             participants: Participants,
             args,
-            precice_config_params=None,
-            silent=False,
-            executor=Executors.LOCAL.value):
+            precice_config_params: dict = None,
+            silent: bool = False,
+            executor: str = Executors.LOCAL.value):
         is_monolithic = len(participants) == 1
 
         if is_monolithic:  # only a single time step size
@@ -75,7 +75,8 @@ class Results:
                     "chash": os.environ['GITHUB_SHA']
                 }
             else:
-                raise Exception(f'unknown executor {executor}. Please choose one of the following:{[e.value for e in Executors]}')
+                raise Exception(f'unknown executor {executor}. Please choose one of the following:{
+                                [e.value for e in Executors]}')
 
         metadata = {
             "participants version": git_info,
