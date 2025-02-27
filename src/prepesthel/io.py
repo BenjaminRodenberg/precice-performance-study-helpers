@@ -21,15 +21,18 @@ class Results:
     def append(self, experiment_summary):
         self.dataFrame = pd.concat([self.dataFrame, DataFrame(experiment_summary, index=[0])], ignore_index=True)
 
-    def output_preliminary(self):
-        print(f"Write preliminary output to {self.path}")
+    def output_preliminary(self, silent=False):
+        if not silent:
+            print(f"Write preliminary output to {self.path}")
+
         self.dataFrame.to_csv(self.path)
 
-        print('-' * os.get_terminal_size().columns)
-        print(self.dataFrame)
-        print('-' * os.get_terminal_size().columns)
+        if not silent:
+            print('-' * os.get_terminal_size().columns)
+            print(self.dataFrame)
+            print('-' * os.get_terminal_size().columns)
 
-    def output_final(self, participants: Participants, args, precice_config_params=None):
+    def output_final(self, participants: Participants, args, precice_config_params=None, silent=False):
         is_monolithic = len(participants) == 1
 
         if is_monolithic:  # only a single time step size
@@ -38,7 +41,8 @@ class Results:
             self.dataFrame = self.dataFrame.set_index(["time window size"] +
                                                       [f"time step size {p.name}" for p in participants.values()])
 
-        print(f"Write final output to {self.path}")
+        if not silent:
+            print(f"Write final output to {self.path}")
 
         git_info = {}
 
@@ -79,9 +83,10 @@ class Results:
                 f.write(f"# {key}:{value}\n")
             self.dataFrame.to_csv(f)
 
-        print('-' * os.get_terminal_size().columns)
-        for key, value in metadata.items():
-            print(f"{key}:{value}")
-        print()
-        print(self.dataFrame)
-        print('-' * os.get_terminal_size().columns)
+        if not silent:
+            print('-' * os.get_terminal_size().columns)
+            for key, value in metadata.items():
+                print(f"{key}:{value}")
+            print()
+            print(self.dataFrame)
+            print('-' * os.get_terminal_size().columns)
