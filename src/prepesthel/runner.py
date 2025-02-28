@@ -38,7 +38,7 @@ def run(participants: Participants, template_path=None, precice_config_params=No
     print(f"{datetime.datetime.now()}: Done.")
 
 
-def postproc(participants: Participants, precice_config_params=None, tolerance=10e-10):
+def postproc(participants: Participants, precice_config_params=None, tolerance=10e-10, silent=False):
     print(f"{datetime.datetime.now()}: Postprocessing...")
     summary = {}
 
@@ -52,16 +52,15 @@ def postproc(participants: Participants, precice_config_params=None, tolerance=1
         df = pd.read_csv(participant.root / f"output-{participant.name}.csv", comment="#")
         dts = df.times.diff()  # get time step sizes from data
         coefficient_of_variation = np.sqrt(dts.var()) / dts.mean()
-        if abs(coefficient_of_variation) > tolerance:  # if time step sizes vary a lot raise a warning
+        if abs(coefficient_of_variation) > tolerance and not silent:  # if time step sizes vary a lot raise a warning
             term_size = os.get_terminal_size()
             print('-' * term_size.columns)
             print(f"WARNING: times vary stronger than expected. Coefficient of variations {coefficient_of_variation} is larger than provided tolerance of {
                   tolerance}. Note that adaptive time stepping is not supported. The maximum dt will be used in the output.")
             print(df)
             print('-' * term_size.columns)
-            summary[f"time step size {participant.name}"] = dts.max()
-        else:
-            summary[f"time step size {participant.name}"] = dts.mean()
+        
+        summary[f"time step size {participant.name}"] = dts.mean()
 
         if is_monolithic:
             summary[f"error Mass-Left {participant.name}"] = df['error Mass-Left'].abs().max()
