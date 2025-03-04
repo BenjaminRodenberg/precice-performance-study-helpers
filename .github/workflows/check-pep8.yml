@@ -16,9 +16,6 @@ jobs:
         uses: peter-evans/autopep8@v2
         with:
           args: --recursive --in-place --aggressive --aggressive --exit-code --ignore E402 --max-line-length 120 .
-      - name: Fail if autopep8 made changes
-        if: ${{ steps.autopep8.outputs.exit-code == 2 }}
-        run: exit 1
       - name: Commit autopep8 changes
         if: steps.autopep8.outputs.exit-code == 2
         run: |
@@ -26,3 +23,6 @@ jobs:
           git config --global user.email ''
           git commit -am "Automated autopep8 fixes"
           git push
+      - name: Fail if autopep8 made changes
+        if: ${{ steps.autopep8.outputs.exit-code == 2 }}
+        run: exit 1
