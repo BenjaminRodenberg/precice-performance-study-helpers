@@ -75,8 +75,10 @@ class Results:
                     "chash": os.environ['GITHUB_SHA']
                 }
             else:
-                raise Exception(f'unknown executor {executor}. Please choose one of the following: {
-                                [e.value for e in Executors]}')
+                raise Exception(f'''
+                    unknown executor {executor}.
+                    Please choose one of the following: {[e.value for e in Executors]}
+                    ''')
 
         metadata = {
             "participants version": git_info,
