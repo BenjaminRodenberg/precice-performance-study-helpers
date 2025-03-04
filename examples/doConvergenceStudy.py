@@ -50,7 +50,7 @@ def do_experiment(template_path, precice_config_params, participants: Participan
         qoi = "Displacement0"  # quantity of interest
 
         if pname == "Solid":
-            df_ref = pd.read_csv(f"watchpoint_{participant.name}_ref", comment="#", sep='\s+')
+            df_ref = pd.read_csv(f"watchpoint_{participant.name}_ref", comment="#", sep='\\s+')
             try:
                 qoi_ref_at_end = df_ref[df_ref["Time"] == t_end][qoi].to_list()[-1]
             except IndexError:
@@ -60,7 +60,7 @@ def do_experiment(template_path, precice_config_params, participants: Participan
                 participant.root /
                 f"precice-{pname}-watchpoint-Flap-Tip.log",
                 comment="#",
-                sep='\s+')
+                sep='\\s+')
             qoi_at_end = df[df["Time"] == t_end][qoi].to_list()[-1]
             summary[f"{qoi} {pname}"] = qoi_at_end
             summary[f"error {pname}"] = abs(qoi_at_end - qoi_ref_at_end)

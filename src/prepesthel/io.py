@@ -27,7 +27,7 @@ class Results:
     def append(self, experiment_summary):
         self.dataFrame = pd.concat([self.dataFrame, DataFrame(experiment_summary, index=[0])], ignore_index=True)
 
-    def output_preliminary(self, silent=False):
+    def output_preliminary(self, silent: bool = False):
         if not silent:
             print(f"Write preliminary output to {self.path}")
 
