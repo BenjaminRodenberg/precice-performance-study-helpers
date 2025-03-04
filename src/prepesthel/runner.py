@@ -5,6 +5,7 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader
 from pathlib import Path
 import os
 import numpy as np
+import warnings
 
 
 def render(template_path: Path,
@@ -63,8 +64,11 @@ def postproc(participants: Participants,
             if not silent:
                 term_size = os.get_terminal_size()
                 print('-' * term_size.columns)
-                print(f"WARNING: times vary stronger than expected. Coefficient of variations {coefficient_of_variation} is larger than provided tolerance of {
-                      tolerance}. Note that adaptive time stepping is not supported. The maximum dt will be used in the output.")
+                warnings.warn(f'''
+                Times vary stronger than expected.
+                Coefficient of variations {coefficient_of_variation} is larger than provided tolerance of {tolerance}.
+                Note that adaptive time stepping is not supported. The maximum dt will be used in the output.
+                ''')
                 print(df)
                 print('-' * term_size.columns)
             summary[f"time step size {participant.name}"] = dts.max()
