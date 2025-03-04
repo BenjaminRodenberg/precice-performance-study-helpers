@@ -15,3 +15,5 @@ Run `pip3 install .` in this folder. Or install the latest release from PyPI via
 ## How to use
 
 `examples/doConvergenceStudy.py` shows an example script using `prepesthel` for a convergence study of a coupled simulation.
+
+Refer to https://github.com/BenjaminRodenberg/oscillator-example and https://github.com/BenjaminRodenberg/tutorials/tree/test-cases-dissertation for projects using this library for automation of performance studies.
